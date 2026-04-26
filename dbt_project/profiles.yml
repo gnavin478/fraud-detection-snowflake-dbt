@@ -1,0 +1,14 @@
+dbt_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: na61586.ap-southeast-7.aws
+      user: gnavin478
+      password: Gnavin@9150710085
+      role: ACCOUNTADMIN
+      database: FRAUD_DETECTION_DB
+      warehouse: FRAUD_WH
+      schema: STAGING
+      threads: 4
+      client_session_keep_alive: false

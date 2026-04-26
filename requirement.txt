@@ -1,0 +1,10 @@
+dbt-core==1.11.6
+dbt-snowflake==1.11.3
+
+apache-airflow==2.9.3
+
+snowflake-connector-python
+snowflake-sqlalchemy
+
+pandas
+numpy

@@ -1,0 +1,53 @@
+version: "3.8"
+
+x-airflow-common:
+  &airflow-common
+  image: apache/airflow:2.9.3
+  environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - ./airflow/logs:/opt/airflow/logs
+    - ./airflow/plugins:/opt/airflow/plugins
+    - ./dbt_project:/opt/airflow/dbt_project
+  user: "${AIRFLOW_UID:-50000}:0"
+
+services:
+  airflow-init:
+    <<: *airflow-common
+    command: >
+      bash -c "
+      pip install dbt-snowflake &&
+      airflow db init &&
+      airflow users create
+      --username navin
+      --password Navin@130702
+      --firstname Navin
+      --lastname G
+      --role Admin
+      --email gnavin478@gmail.com
+      "
+
+  airflow-webserver:
+    <<: *airflow-common
+    depends_on:
+      - airflow-init
+    command: >
+      bash -c "
+      pip install dbt-snowflake &&
+      airflow webserver
+      "
+    ports:
+      - "8080:8080"
+
+  airflow-scheduler:
+    <<: *airflow-common
+    depends_on:
+      - airflow-init
+    command: >
+      bash -c "
+      pip install dbt-snowflake &&
+      airflow scheduler
+      "
