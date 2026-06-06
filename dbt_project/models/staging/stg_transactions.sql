@@ -27,7 +27,7 @@ SELECT
     COALESCE(isFraud, 0) AS is_fraud,
     COALESCE(isFlaggedFraud, 0) AS is_flagged_fraud,
 
-    -- derived columns 🔥
+    -- derived columns
 
     -- transaction category
     CASE 
